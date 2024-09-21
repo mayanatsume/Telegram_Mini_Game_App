@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Tap to Earn - Mini Game</title>
+    <style>
+        /* Configuração da tela do telefone */
+        .mobile-container {
+            width: 100%;
+            max-width: 375px; /* Largura típica de um telefone */
+            min-width: 320px; /* Largura mínima para celulares pequenos */
+            height: 700px; /* Definir a altura da caixa como fixo */
+            margin: 0 auto; /* Centralizar a caixa horizontalmente */
+            position: relative;
+            border: 16px solid #333; /* Borda para parecer com a moldura de um telefone */
+            border-radius: 36px; /* Cantos arredondados */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombras para destacar a área simulada */
+            background: linear-gradient(to right, black, red); /* Gradiente de fundo */
+            overflow: hidden;
+        }
+
+        /* Estilo da página */
+        body {
+            background: linear-gradient(to right, black, red); /* Gradiente preto para vermelho */
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+        }
+
+        /* Remover o texto e definir imagens de fundo para os botões */
+        .menu-buttons button, .task-wallet-container button, .booster-button {
+            background-color: orange; /* Fundo laranja */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            border: none;
+            margin: 0;
+            cursor: pointer;
+            width: 110px;
+            height: 40px;
+            text-indent: -9999px; /* Esconde o texto */
+            position: absolute; /* Permite mover com top e left */
+            border-radius: 12px; /* Adicionar bordas arredondadas */
+        }
+
+        /* Definir imagens específicas para cada botão e permitir mover com top e left */
+        .menu-buttons button:nth-child(1) {
+            background-image: url('/static/images/points-button.png'); /* Imagem do botão Points */
+            top: 170px;
+            left: 70px;
+        }
+
+        .menu-buttons button:nth-child(2) {
+            background-image: url('/static/images/league-button.png'); /* Imagem do botão League */
+            top: 100px;
+            left: 5px;
+        }
+
+        .menu-buttons form:nth-child(3) button {
+            background-image: url('/static/images/friends-button.png'); /* Imagem do botão Friends */
+            top: 600px;
+            left: 10px;
+        }
+
+        .menu-buttons form:nth-child(4) button {
+            background-image: url('/static/images/ranking-button.png'); /* Imagem do botão Ranking */
+            top: 100px;
+            left: 240px;
+        }
+
+        .task-wallet-container .tasks-button {
+            background-image: url('/static/images/tasks-bg.png'); /* Imagem do botão Tasks */
+            top: 600px;
+            left: 20px;
+        }
+
+        .task-wallet-container .wallet-button {
+            background-image: url('/static/images/wallet-bg.png'); /* Imagem do botão Wallet */
+            top: 600px;
+            left: 190px;
+        }
+
+        .task-wallet-container .tasks-button {
+         background-image: url('/static/images/tasks-button.png'); /* Imagem do botão Tasks */
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        width: 110px;
+        height: 40px;
+        border-radius: 12px; /* Bordas arredondadas */
+        border: none;
+        cursor: pointer;
+        position: absolute; /* Permite mover com top e left */
+        top: 600px; /* Ajuste conforme necessário */
+        left: 130px; /* Ajuste conforme necessário */
+}
+
+.task-wallet-container .wallet-button {
+    background-image: url('/static/images/wallet-button.png'); /* Imagem do botão Wallet */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 110px;
+    height: 40px;
+    border-radius: 12px; /* Bordas arredondadas */
+    border: none;
+    cursor: pointer;
+    position: absolute; /* Permite mover com top e left */
+    top: 600px; /* Ajuste conforme necessário */
+    left: 250px; /* Ajuste conforme necessário */
+}
+
+        .booster-button {
+            background-image: url('/static/images/boost-button.png'); /* Imagem do botão Boost */
+            top: 500px;
+            left: 255px;
+        }
+
+        .click-counter {
+            font-size: 24px;
+            color: white;
+            font-weight: bold;
+            position: absolute; /* Permite usar top e left para reposicionar */
+            top: 500px; /* Ajuste a posição vertical conforme necessário */
+            left: 30px; /* Ajuste a posição horizontal conforme necessário */
+            z-index: 10; /* Garante que o contador fique acima de outros elementos */
+        }
+
+        img {
+           width: 300px; /* Ajuste o tamanho desejado */
+           height: 300px; /* Ajuste o tamanho desejado */
+           transition: transform 0.2s;
+           z-index: 5;
+           position: absolute; /* Permite mover com top e left */
+           top: 210px; /* Mantém a posição vertical */
+           left: 50px; /* Mantém a posição horizontal */
+           cursor: pointer; /* Torna a imagem clicável, cursor de mão */
+           pointer-events: all; /* Garante que apenas a imagem seja clicável */
+}
+        
+
+        img:active {
+            transform: rotate(10deg); /* Inclina a imagem ao clicar */
+        }
+
+        /* Botões Tasks e Wallet */
+        .task-wallet-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            gap: 0px;
+        }
+
+        .task-wallet-container button {
+            margin: 0;
+            width: 130px;
+            height: 40px;
+            border-radius: 12px; /* Adicionar bordas arredondadas aos botões */
+        }
+
+       /* Estilo base para a imagem +1 e +2 */
+        .plus-one, .plus-two {
+         position: absolute;
+         top: 60%; /* Ajuste conforme necessário para a posição vertical */
+         left: 55%; /* Ajuste conforme necessário para a posição horizontal */
+         transform: translate(-50%, -50%); /* Centraliza completamente */
+         width: 100px;
+         height: 60px;
+         z-index: 100; /* Garante que o elemento fique acima dos outros */
+         pointer-events: none; /* Impede interação com o clique */
+         animation: fade-out 2s forwards; /* Animação para desaparecer */
+        }
+
+        /* Ajustar tamanho do +1 */
+    
+        /* Estilo específico para o +2 */
+        .plus-two {
+    width: 70px;  /* Tamanho para o +2 */
+    height: 60px;  /* Altura para o +2 */
+}
+
+       /* Animação para o efeito de fade-out */
+    @keyframes fade-out {
+    0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -300%) scale(1.5); /* Mover para cima e aumentar de tamanho ao desaparecer */
+    }
+}
+
+        /* Botão do usuário do Telegram */
+        .telegram-user-button {
+            background-color: orange;
+            border-radius: 12px;
+            width: 250px; /* Mais longo */
+            height: 40px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            top: 30px;
+            margin-left: -140px;
+        }
+
+        /* Caixa de texto para mostrar os pontos */
+        .points-box {
+            position: relative;
+            width: 120px;
+            height: 40px;
+            font-size: 24px;
+            color: white;
+            text-align: center;
+            background-color: transparent;
+            top: 135px;
+            margin-left: 140px;
+        }
+
+        /* Caixa de texto para mostrar a liga */
+        .league-box {
+            position: relative;
+            width: 120px;
+            height: 40px;
+            font-size: 24px;
+            color: white;
+            text-align: center;
+            background-color: transparent;
+            top: 20px;
+            margin-left: 100px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Caixa que simula a tela de telefone -->
+    <div class="mobile-container">
+        <!-- Botão para exibir o usuário do Telegram -->
+        <button class="telegram-user-button" id="telegram-user-button">
+            <!-- Espaço reservado para futuras informações de login -->
+        </button>
+
+        <!-- Caixa de texto para mostrar a contagem de pontos -->
+        <div class="points-box" id="points-box">0</div>
+
+        <!-- Caixa de texto para mostrar a liga -->
+        <div class="league-box" id="league-box">Bronze</div>
+
+        <!-- Exibe os botões com imagens -->
+        <div class="menu-buttons">
+            <button></button> <!-- Imagem para Points -->
+            <button></button> <!-- Imagem para League -->
+            <form action="/friends">
+                <button></button> <!-- Imagem para Friends -->
+            </form>
+            <form action="/ranking">
+                <button></button> <!-- Imagem para Ranking -->
+            </form>
+        </div>
+
+        <!-- Imagem do cachorro (clicar nela adiciona pontos e treme) -->
+        <button onclick="ganharPontos()" style="background-color: transparent; border: none;">
+            <img src="/static/images/kenshin.png" alt="Cachorro">
+        </button>
+
+        <!-- Linha com o contador de cliques e o botão Boost -->
+        <div class="boost-click-container">
+            <div class="click-counter" id="click-counter">0/100</div>
+            <button class="booster-button" onclick="ativarBooster()">Boost</button>
+        </div>
+
+        <!-- Botões Tasks e Wallet com imagens de fundo -->
+        <div class="task-wallet-container">
+            <form action="/tasks">
+                <button class="tasks-button"></button>
+            </form>
+            <form action="#">
+                <button class="wallet-button"></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Template da imagem +1 para clonar -->
+    <img id="plus-one-template" src="/static/images/plus-one.png" class="plus-one" style="display: none;">
+    <img id="plus-two-template" src="/static/images/plus-two.png" class="plus-two" style="display: none;">
+
+    <script>
+   let pontos = 0;
+let boosterAtivo = false;
+let cliquesRestantes = 100;
+
+function ganharPontos() {
+    if (cliquesRestantes <= 0) {
+        return; // Para de somar pontos após 0 cliques
+    }
+
+    // Define quantos pontos e cliques remover
+    let pontosAdicionar = boosterAtivo ? 2 : 1; // Somar 2 se o Boost estiver ativo
+    let cliquesRemover = boosterAtivo ? 2 : 1;  // Remover 2 cliques se o Boost estiver ativo
+
+    cliquesRestantes -= cliquesRemover;  // Diminui os cliques restantes
+
+    // Certifica que o contador de cliques não fique negativo
+    if (cliquesRestantes < 0) {
+        cliquesRestantes = 0;
+    }
+
+    // Atualiza o contador de cliques para mostrar X/100
+    document.getElementById("click-counter").innerText = `${cliquesRestantes}/100`;
+
+    pontos += pontosAdicionar; // Adiciona os pontos corretamente
+    document.getElementById("points-box").innerText = pontos;
+
+    // Atualiza a classificação (ranking)
+    const rankingElement = document.getElementById("league-box");
+    if (pontos < 10) {
+        rankingElement.innerText = "Bronze";
+    } else if (pontos < 20) {
+        rankingElement.innerText = "Silver";
+    } else if (pontos < 30) {
+        rankingElement.innerText = "Gold";
+    } else if (pontos < 40) {
+        rankingElement.innerText = "Diamond";
+    } else {
+        rankingElement.innerText = "Master";
+    }
+
+    // Exibe a animação correta (+1 ou +2)
+    var template = document.getElementById(boosterAtivo ? "plus-two-template" : "plus-one-template");
+    var clone = template.cloneNode(true);
+    document.body.appendChild(clone);
+    clone.style.display = "block";
+
+    setTimeout(function () {
+        clone.remove();
+    }, 2000); // Exibe o +1 ou +2 por 2 segundos
+}
+
+function ativarBooster() {
+    boosterAtivo = true; // Ativa o booster
+    document.querySelector('.booster-button').disabled = true; // Desativa o botão Boost após o uso
+}
+
+    </script>
+</body>
+</html>
+
+

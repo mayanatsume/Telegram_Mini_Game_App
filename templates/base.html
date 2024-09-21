@@ -1,0 +1,42 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        body {
+            background: linear-gradient(to right, black, red);
+            text-align: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        /* Estilo do botão voltar */
+        .back-button {
+            background-color: #ff6600;
+            color: white;
+            border-radius: 12px;
+            width: 80px;
+            height: 40px;
+            top: 20px;
+            left: 20px;
+            position: absolute;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Botão Voltar -->
+    <button class="back-button" onclick="window.history.back()">Voltar</button>
+
+    <!-- Bloco para inserir o conteúdo de cada página -->
+    {% block content %}{% endblock %}
+
+</body>
+</html>
