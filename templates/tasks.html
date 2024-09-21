@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Tasks Page</title>
+    <style>
+        /* Garantir que o corpo tenha um layout flexbox para centralizar verticalmente */
+        body {
+            background: linear-gradient(to right, black, red);  /* Fundo preto e vermelho */
+            font-family: Arial, sans-serif;
+            color: white;  /* Texto em branco para contraste */
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            text-align: center;
+            overflow: hidden; /* Prevenir rolagem no corpo da página */
+        }
+
+        /* Configuração da tela do telefone */
+        .mobile-container {
+            width: 100%;
+            max-width: 375px; /* Largura típica de um telefone */
+            min-width: 320px; /* Largura mínima para celulares pequenos */
+            height: 700px; /* Definir a altura da caixa como fixo */
+            margin: 0 auto; /* Centralizar a caixa horizontalmente */
+            position: relative;
+            border: 16px solid #333; /* Borda para parecer com a moldura de um telefone */
+            border-radius: 36px; /* Cantos arredondados */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombras para destacar a área simulada */
+            background: linear-gradient(to right, black, red); /* Gradiente de fundo */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Alinhar ao topo */
+            align-items: center;
+            overflow: hidden; /* Prevenir que a caixa role */
+        }
+
+        /* Botão com a imagem de Tasks */
+        .tasks-header {
+            background-image: url('/static/images/tasks-button.png'); /* Coloque o caminho correto da imagem do botão Tasks */
+            background-size: contain; /* Ajustar a imagem para caber dentro do botão sem cortar */
+            background-repeat: no-repeat;
+            background-position: center; /* Centraliza a imagem */
+            border-radius: 12px; /* Bordas arredondadas */
+            width: 340px; /* Ajustável */
+            height: 100px; /* Ajustável */
+            position: absolute; /* Permite usar top e left */
+            top: 80px; /* Ajuste conforme necessário */
+            left: 20px; /* Ajuste conforme necessário */
+            margin: 0; /* Remover margens */
+        }
+
+        /* Container da lista de tarefas com scroll oculto */
+        .task-list-container {
+            width: 300px; /* Ajuste conforme necessário */
+            height: 300px; /* Altura fixa para o container com scroll */
+            overflow-y: scroll; /* Permite rolagem sem exibir a barra */
+            margin-top: 190px; /* Mover as tarefas um pouco mais para baixo */
+            margin-bottom: 20px; /* Espaço antes do formulário de adicionar tarefa */
+            position: relative;
+        }
+
+        /* Ocultar a barra de rolagem */
+        .task-list-container::-webkit-scrollbar {
+            width: 0px;  /* Largura zero para ocultar a barra de rolagem */
+        }
+
+        .task-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            width: 100%; /* Ajuste conforme necessário */
+        }
+
+        /* Estilo dos itens da lista de tarefas */
+        .task-list li {
+            margin: 10px 0;
+            padding: 10px;
+            background-color: orange; /* Cor gradiente laranja */
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        /* Estilo dos links de tarefas */
+        .task-list li a {
+            display: block;
+            text-decoration: none;
+            color: white;  /* Cor do texto do link */
+            width: 100%;
+            height: 100%;
+        }
+
+        .task-list li a .task-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .task-list li a:hover {
+            background-color: #ff9933; /* Mudar a cor ao passar o mouse */
+        }
+
+        /* Botão DO e DONE com gradiente laranja */
+        .do-button {
+            padding: 8px 16px;
+            background: linear-gradient(to bottom, orange, #ff6600); /* Gradiente laranja */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            min-width: 60px;
+        }
+
+        .do-button.done {
+            background-color: #28a745;
+            cursor: default;
+        }
+
+        /* Formulário para adicionar tarefas */
+        .add-task-form {
+            position: absolute; /* Permite usar top e left */
+            top: 550px; /* Ajuste conforme necessário */
+            left: 30px; /* Ajuste conforme necessário */
+            width: 300px; /* Ajuste a largura conforme necessário */
+        }
+
+        .add-task-form input[type="text"], .add-task-form input[type="url"] {
+            padding: 8px;
+            width: 100%; /* Preencher toda a largura disponível */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* Botão separado para adicionar tarefa */
+        .add-task-button {
+            padding: 8px 16px;
+            background: linear-gradient(to bottom, orange, #ff6600); /* Gradiente laranja */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 300px; /* Ajustável */
+            position: absolute; /* Permite ajustar a posição */
+            top: 640px; /* Ajuste conforme necessário */
+            left: 40px; /* Ajuste conforme necessário */
+        }
+
+        .add-task-button:hover {
+            background-color: #218838;
+        }
+
+        /* Botão de Voltar */
+        .back-button {
+            display: inline-block;
+            padding: 10px 20px;
+            background: linear-gradient(to bottom, orange, #ff6600); /* Gradiente laranja */
+            color: #fff;
+            border-radius: 8px;
+            text-decoration: none;
+            cursor: pointer;
+            position: absolute; /* Permite usar top e left */
+            top: 20px; /* Ajuste conforme necessário */
+            left: 20px; /* Ajuste conforme necessário */
+            margin: 0; /* Remover margem para garantir o uso de top/left */
+        }
+
+        .back-button:hover {
+            background-color: #ff7f50;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tela de telefone -->
+    <div class="mobile-container">
+
+        <!-- Substituir o título pelo botão de Tasks -->
+        <div class="tasks-header"></div>
+
+        <!-- Container da lista de tarefas com scroll -->
+        <div class="task-list-container">
+            <ul class="task-list" id="task-list">
+                <li>
+                    <a href="https://twitter.com" target="_blank">
+                        <div class="task-content">
+                            Follow our CEO
+                            <button class="do-button" onclick="markAsDone(this)">DO</button>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="https://youtube.com" target="_blank">
+                        <div class="task-content">
+                            Watch our YouTube video
+                            <button class="do-button" onclick="markAsDone(this)">DO</button>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Formulário para adicionar novas tarefas -->
+        <div class="add-task-form" id="add-task-form">
+            <input type="text" id="task-title" placeholder="Digite o título da tarefa (ex: Follow our CEO)">
+            <input type="url" id="task-link" placeholder="Adicione um link de tarefa (URL)">
+        </div>
+
+        <!-- Botão separado para adicionar tarefa -->
+        <button class="add-task-button" onclick="addTask()">Adicionar Tarefa</button>
+
+        <!-- Botão de Voltar -->
+        <a href="{{ url_for('home') }}" class="back-button">Voltar</a>
+
+    </div>
+
+    <script>
+        // Função para adicionar nova tarefa
+        function addTask() {
+            const taskTitleInput = document.getElementById('task-title');
+            const taskLinkInput = document.getElementById('task-link');
+            const taskTitle = taskTitleInput.value;
+            const taskLink = taskLinkInput.value;
+
+            if (taskTitle && taskLink) {
+                const taskList = document.getElementById('task-list');
+                
+                // Criar novo item de lista com o título linkado
+                const newTaskItem = document.createElement('li');
+                
+                const newTaskLink = document.createElement('a');
+                newTaskLink.href = taskLink;
+                newTaskLink.target = "_blank";  // Abre o link em nova aba
+                
+                const taskContent = document.createElement('div');
+                taskContent.classList.add('task-content');
+                taskContent.textContent = taskTitle;  // Exibir o título como conteúdo
+                
+                const doButton = document.createElement('button');
+                doButton.textContent = 'DO';
+                doButton.classList.add('do-button');
+                doButton.onclick = function() { markAsDone(doButton) };
+                
+                taskContent.appendChild(doButton);
+                newTaskLink.appendChild(taskContent);
+                newTaskItem.appendChild(newTaskLink);
+                taskList.appendChild(newTaskItem);
+
+                // Limpa os campos de entrada
+                taskTitleInput.value = '';
+                taskLinkInput.value = '';
+            } else {
+                alert('Por favor, insira um título e um link válidos.');
+            }
+        }
+
+        // Função para marcar como DONE
+        function markAsDone(button) {
+            button.innerHTML = '';  // Limpar o texto do botão
+            const loadingCircle = document.createElement('div');  // Criar o círculo giratório
+            loadingCircle.classList.add('loading-circle');
+            button.appendChild(loadingCircle);
+
+            // Simular um delay de 2 segundos para verificar a tarefa
+            setTimeout(function() {
+                button.textContent = 'DONE';  // Substituir por DONE
+                button.classList.add('done');
+                button.disabled = true;  // Desabilitar o botão após a tarefa ser concluída
+            }, 2000);
+        }
+
+        // Simulando um identificador do usuário responsável
+        const isResponsavel = true;  // Alterar para false se não for o responsável
+
+        // Mostrar o formulário de adicionar tarefa somente para o responsável
+        if (isResponsavel) {
+            document.getElementById('add-task-form').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
+
+

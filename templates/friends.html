@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Friends Page</title>
+    <style>
+        /* Configuração da tela do telefone */
+        .mobile-container {
+            width: 100%;
+            max-width: 375px; /* Largura típica de um telefone */
+            min-width: 320px; /* Largura mínima para celulares pequenos */
+            height: 700px; /* Definir a altura da caixa como fixo */
+            margin: 0 auto; /* Centralizar a caixa horizontalmente */
+            position: relative;
+            border: 16px solid #333; /* Borda para parecer com a moldura de um telefone */
+            border-radius: 36px; /* Cantos arredondados */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Sombras para destacar a área simulada */
+            background: linear-gradient(to right, black, red); /* Gradiente de fundo */
+            overflow: hidden;
+            top: 50%; /* Centralizar verticalmente */
+            transform: translateY(-50%); /* Ajustar para ficar exatamente no centro */
+        }
+        /* Estilo da página */
+        body {
+            background: linear-gradient(to right, black, red); /* Gradiente de fundo igual à página principal */
+            text-align: center;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+        }
+
+        /* Estilo para os botões e caixas */
+        .rounded-box, .button {
+            background: linear-gradient(to bottom, orange, #ff6600); /* Gradiente laranja */
+            border-radius: 12px; /* Bordas arredondadas */
+            padding: 10px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            width: 300px;
+            height: 50px;
+            border: none;
+            margin: 20px 0;
+            position: absolute;
+        }
+
+        /* Botão Voltar */
+        .back-button {
+            background: linear-gradient(to bottom, orange, #ff6600); /* Gradiente laranja */
+            color: white;
+            border-radius: 12px;
+            width: 80px;
+            height: 40px;
+            top: 20px; /* Ajuste conforme necessário */
+            left: 20px; /* Ajuste conforme necessário */
+            position: absolute;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Imagem do botão Friends */
+        .friends-button {
+        background-image: url('/static/images/friends-button.png'); /* A mesma imagem do botão Friends da primeira página */
+        background-size: contain; /* Faz a imagem se ajustar dentro do botão */
+        background-repeat: no-repeat; /* Evita repetição da imagem */
+        background-position: center; /* Centraliza a imagem no botão */
+        width: 330px; /* Largura do botão */
+        height: 70px; /* Altura do botão */
+        top: 70px; /* Ajuste conforme necessário */
+        left: 20px; /* Ajuste conforme necessário */
+        border-radius: 12px; /* Bordas arredondadas */
+       }
+
+        /* Caixa para "Invite a friend and earn 500 points" */
+        .invite-box {
+            background: linear-gradient(to bottom, orange, #ff6600); /* Gradiente laranja */
+            top: 180px; /* Ajuste conforme necessário */
+            left: 30px; /* Ajuste conforme necessário */
+            width: 300px; /* Defina a largura desejada */
+            height: 30px; /* Defina a altura desejada */
+            border-radius: 12px; /* Mantém as bordas arredondadas */
+        }
+
+
+        /* Ajuste de tamanho para a caixa "List of Friends" */
+        .friends-list-box {
+            top: 250px; /* Ajuste conforme necessário */
+            left: 30px; /* Ajuste conforme necessário */
+            width: 300px; /* Ajuste o tamanho conforme necessário */
+            height: 30px; /* Ajuste a altura conforme necessário */
+        }
+
+        /* Caixas de amigos convidados */
+        .friend-item {
+            background: linear-gradient(to bottom, orange, #ff6600); /* Gradiente laranja */
+            border-radius: 12px;
+            padding: 10px;
+            color: white;
+            width: 300px;
+            margin: 10px auto;
+            text-align: center;
+            position: relative;
+            top: 340px;
+            left: 5px; /* Ajuste conforme necessário */
+        }
+
+        /* Caixa para "Invite a Friend Here" */
+        .invite-friend-box {
+            top: 570px; /* Ajuste conforme necessário */
+            left: 30px; /* Ajuste conforme necessário */
+            width: 230px;
+            height: 30px;
+        }
+
+       /* Caixa menor para copiar o link */
+        .copy-link-box {
+          width: 50px;
+          height: 50px;
+          position: absolute; /* Necessário para que top e left funcionem */
+          top: 590px; /* Alinhado com a caixa de invite */
+          left: 300px; /* Ajuste conforme necessário */
+          border-radius: 12px; /* Bordas arredondadas */
+          background: linear-gradient(to bottom, orange, #ff6600); /* Gradiente laranja */
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+        }
+
+
+        /* Estilo para o ícone de copiar */
+        .copy-link-box::before {
+            content: "\1F4CB"; /* Ícone de "Copiar" (clip board emoji) */
+            font-size: 24px;
+            color: white;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Caixa que simula a tela de telefone -->
+    <div class="mobile-container">
+
+        <!-- Botão Voltar para a página Home -->
+        <a href="/" class="back-button">Voltar</a>
+
+        <!-- Imagem do botão Friends -->
+        <div class="rounded-box friends-button"></div>
+
+        <!-- Caixa "Invite a friend and earn 500 points" -->
+        <div class="rounded-box invite-box">Invite a Friend and Earn 500 points</div>
+
+        <!-- Caixa "List of Friends" -->
+        <div class="rounded-box friends-list-box">List of Friends</div>
+
+        <!-- Lista de amigos convidados -->
+        <div class="friend-item">Friend 1 (Telegram)</div>
+        <div class="friend-item">Friend 2 (Telegram)</div>
+        <div class="friend-item">Friend 3 (Telegram)</div>
+
+        <!-- Caixa "Invite a Friend Here" -->
+        <div class="rounded-box invite-friend-box">Invite a Friend Here</div>
+
+        <!-- Caixa menor para copiar o link -->
+        <div class="copy-link-box"></div>
+
+    </div>
+
+</body>
+</html>
+
+
+
