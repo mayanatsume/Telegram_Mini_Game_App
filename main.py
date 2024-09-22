@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import sqlite3
 from flask import Flask, render_template
 
@@ -158,4 +157,4 @@ if __name__ == "__main__":
     init_db()
     insert_dummy_data()
     app.run(debug=True)
->>>>>>> master
+
