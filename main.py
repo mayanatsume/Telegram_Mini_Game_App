@@ -1,38 +1,7 @@
-import sqlite3
 from flask import Flask, render_template
 import os
 
 app = Flask(__name__)
-
-# Função para criar o banco de dados e a tabela (execute uma vez para criar o banco)
-def init_db():
-    conn = sqlite3.connect('players.db')
-    cursor = conn.cursor()
-    cursor.execute('''CREATE TABLE IF NOT EXISTS players (
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        name TEXT NOT NULL,
-                        points INTEGER NOT NULL,
-                        category TEXT NOT NULL
-                    )''')
-    conn.commit()
-    conn.close()
-
-# Função para adicionar dados fictícios (execute uma vez para preencher o banco)
-def insert_dummy_data():
-    conn = sqlite3.connect('players.db')
-    cursor = conn.cursor()
-    # Exemplo de dados
-    players = [
-        ('MasterPlayer1', 5000, 'master'),
-        ('MasterPlayer2', 4900, 'master'),
-        ('DiamondPlayer1', 4700, 'diamond'),
-        ('DiamondPlayer2', 4600, 'diamond'),
-        ('GoldPlayer1', 4400, 'gold'),
-        ('GoldPlayer2', 4300, 'gold')
-    ]
-    cursor.executemany('INSERT INTO players (name, points, category) VALUES (?, ?, ?)', players)
-    conn.commit()
-    conn.close()
 
 # Home page
 @app.route("/")
@@ -52,35 +21,27 @@ def friends():
 # Ranking page
 @app.route("/ranking")
 def ranking():
-    # Conectar ao banco de dados e buscar os jogadores por categoria
-    conn = sqlite3.connect('players.db')
-    cursor = conn.cursor()
+    # Dados fictícios para as ligas (temporariamente, até o banco de dados ser configurado)
+    master_players = [
+        {'name': 'MasterPlayer1', 'points': 5000},
+        {'name': 'MasterPlayer2', 'points': 4900},
+    ]
+    
+    diamond_players = [
+        {'name': 'DiamondPlayer1', 'points': 4700},
+        {'name': 'DiamondPlayer2', 'points': 4600},
+    ]
+    
+    gold_players = [
+        {'name': 'GoldPlayer1', 'points': 4400},
+        {'name': 'GoldPlayer2', 'points': 4300},
+    ]
 
-    # Obter os jogadores da categoria Master
-    cursor.execute("SELECT name, points FROM players WHERE category = 'master' ORDER BY points DESC LIMIT 100")
-    master_players = cursor.fetchall()
-
-    # Obter os jogadores da categoria Diamond
-    cursor.execute("SELECT name, points FROM players WHERE category = 'diamond' ORDER BY points DESC LIMIT 100")
-    diamond_players = cursor.fetchall()
-
-    # Obter os jogadores da categoria Gold
-    cursor.execute("SELECT name, points FROM players WHERE category = 'gold' ORDER BY points DESC LIMIT 100")
-    gold_players = cursor.fetchall()
-
-    conn.close()
-
-    # Passar os dados para o template ranking.html
+    # Passar os dados fictícios para o template ranking.html
     return render_template("ranking.html", master_players=master_players, diamond_players=diamond_players, gold_players=gold_players)
 
 if __name__ == "__main__":
-    # Inicializa o banco de dados e insere dados fictícios
-    init_db()
-    
-    # Apenas insere dados se for necessário (verifique se o banco está vazio, por exemplo)
-    if os.environ.get("INSERT_DUMMY_DATA", "false") == "true":
-        insert_dummy_data()
-    
     # Configurações para rodar no Railway
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=True)
+    app.run(host="0.0.0.0", port=port)
+
