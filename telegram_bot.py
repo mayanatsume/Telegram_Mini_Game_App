@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import telebot
 
 # Substitua com o seu token de API fornecido pelo BotFather
@@ -21,7 +21,7 @@ def send_welcome(message):
 
 # Iniciar o bot
 bot.polling()
-=======
+
 import telebot
 
 # Substitua com o seu token de API fornecido pelo BotFather
@@ -44,4 +44,4 @@ def send_welcome(message):
 
 # Iniciar o bot
 bot.polling()
->>>>>>> master
+
