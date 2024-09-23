@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # Substitua com o seu token de API fornecido pelo BotFather
 TOKEN = "7894649662:AAHf8nPH2UWQmyxdPbHAYc-wP9GFiCzV_z0"
-bot = telebot.TeleBot(TTOKEN)
+bot = telebot.TeleBot(TOKEN)
 
 # Home page
 @app.route("/")
