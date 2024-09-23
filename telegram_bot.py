@@ -1,4 +1,5 @@
 import telebot
+import os
 
 # Substitua com o seu token de API fornecido pelo BotFather
 TOKEN = "7894649662:AAHf8nPH2UWQmyxdPbHAYc-wP9GFiCzV_z0"
@@ -18,5 +19,8 @@ def send_welcome(message):
     # Aqui você pode salvar o ID e nome de usuário no banco de dados ou exibir no console
     print(f"Jogador {username} (ID: {user_id}) entrou no jogo.")
 
-# Iniciar o bot
-bot.polling()
+# Definir o Webhook
+WEBHOOK_URL = f"https://telegramminigameapp-production.up.railway.app/{TOKEN}/"
+bot.remove_webhook()
+bot.set_webhook(url=WEBHOOK_URL)
+

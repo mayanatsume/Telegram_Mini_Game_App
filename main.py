@@ -1,7 +1,12 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 import os
+import telebot
 
 app = Flask(__name__)
+
+# Substitua com o seu token de API fornecido pelo BotFather
+TOKEN = "7894649662:AAHf8nPH2UWQmyxdPbHAYc-wP9GFiCzV_z0"
+bot = telebot.TeleBot(TTOKEN)
 
 # Home page
 @app.route("/")
@@ -40,8 +45,22 @@ def ranking():
     # Passar os dados fictícios para o template ranking.html
     return render_template("ranking.html", master_players=master_players, diamond_players=diamond_players, gold_players=gold_players)
 
+# Rota para o webhook do Telegram
+@app.route(f'/{TOKEN}/', methods=['POST'])
+def webhook():
+    json_str = request.get_data(as_text=True)
+    update = telebot.types.Update.de_json(json_str)
+    bot.process_new_updates([update])
+    return "ok", 200
+
+# Definir o Webhook do Telegram no Flask
+WEBHOOK_URL = f"https://telegramminigameapp-production.up.railway.app/{TOKEN}/"
+bot.remove_webhook()
+bot.set_webhook(url=WEBHOOK_URL)
+
 if __name__ == "__main__":
     # Configurações para rodar no Railway
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    app.run(host="0.0.0.0", port=port, debug=False)
+
 
